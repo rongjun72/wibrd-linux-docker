@@ -12,8 +12,13 @@ set -e
 [ $(id -u) == 0 ]
 
 apk add git openssh-client cmake ninja pkgconf linux-headers libnl3-dev elogind-dev cargo dbus-dev
+##rm -rf ./wsbrd
+
 if [ ! -d wsbrd ]; then
-    git clone --depth=10 --quiet --branch=v1.5.1 https://github.com/SiliconLabs/wisun-br-linux ./wsbrd
+    echo "----------./wsbrd does not exist! git clone it"
+    git clone --depth=10 --quiet --branch=merge_rcp https://github.com/rongjun72/wisun-br-linux ./wsbrd
+else
+    echo "----------./wsbrd already exist! use this local copy to compile"
 fi
 export CARGO_NET_GIT_FETCH_WITH_CLI=true
 cmake -S ./wsbrd -B ./wsbrd-build -G Ninja

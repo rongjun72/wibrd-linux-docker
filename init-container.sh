@@ -143,14 +143,16 @@ launch_dbus()
 launch_wsbrd()
 {
     IPV6_NET=$1
-    [ -e "$UART" ] || die "Failed to detect $UART"
+    #[ -e "$UART" ] || die "Failed to detect $UART"
 
     echo " ---> [1mLaunch wsbrd[0m"
     echo "Configuration file:"
     sed -e 's/#.*//' -e '/^ *$/d' -e 's/^/    /' /etc/wsbrd.conf
     echo "Command line:"
-    echo "    wsbrd -u $UART -F /etc/wsbrd.conf$WSBRD_ARGS -o ipv6_prefix=$IPV6_NET --network=\"$WS_NETWORK\""
-    wsbrd -u $UART -F /etc/wsbrd.conf$WSBRD_ARGS -o ipv6_prefix=$IPV6_NET --network="$WS_NETWORK" &
+    # echo "    wsbrd -u $UART -F /etc/wsbrd.conf$WSBRD_ARGS -o ipv6_prefix=$IPV6_NET --network=\"$WS_NETWORK\""
+    # wsbrd -u $UART -F /etc/wsbrd.conf$WSBRD_ARGS -o ipv6_prefix=$IPV6_NET --network="$WS_NETWORK" &
+    echo "    wsbrd -F /etc/wsbrd.conf$WSBRD_ARGS -T 15.4,15.4-mngt,eap -o --ipv6_prefix=$IPV6_NET"
+    wsbrd -F /etc/wsbrd.conf$WSBRD_ARGS -T 15.4,15.4-mngt,eap -o ipv6_prefix=$IPV6_NET
     WSBRD_PID=$!
 
     for i in $(seq 100); do
